@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ff80ab">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-icon" href="icon-192.png">
+    <title>Para el Amor de Mi Vida 🌸❤️</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: linear-gradient(135deg, #fff0f5 0%, #fce7f3 50%, #f8d7e2 100%);
+            font-family: 'Georgia', serif;
+            min-height: 100vh;
+            color: #5d4037;
+            overflow-x: hidden;
+            position: relative;
+            padding: 20px;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 15px;
+            border: 12px solid transparent;
+            border-image: linear-gradient(to right, #ff9aa2, #ffb7b2, #ffd4e0, #ff9aa2) 1;
+            border-image-slice: 1;
+            border-radius: 18px;
+            pointer-events: none;
+            box-shadow: inset 0 0 25px rgba(255,182,193,0.4), 0 0 30px rgba(255,105,180,0.25);
+            z-index: 5;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at 30% 20%, #ff69b430 8%, transparent 9%) 0 0 / 60px 60px,
+                        radial-gradient(circle at 70% 80%, #ffb6c150 7%, transparent 8%) 30px 30px / 60px 60px;
+            opacity: 0.15;
+            animation: sparkle 25s linear infinite;
+            z-index: 1;
+            pointer-events: none;
+        }
+        @keyframes sparkle {
+            0%   { background-position: 0 0, 30px 30px; }
+            100% { background-position: 60px 60px, 90px 90px; }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: row;
+            gap: 60px;
+            padding: 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .left-panel { 
+            width: 42%; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .title { font-size: 38px; margin-bottom: 50px; color: #c2185b; text-shadow: 1px 1px 3px rgba(0,0,0,0.1); }
+        #poem { font-size: 27px; line-height: 1.75; margin-bottom: 70px; position: relative; z-index: 12; }
+        .poem-line { opacity:0; transform:translateX(-50px); margin-bottom:24px; animation:slideIn 1.4s ease-out forwards; }
+
+        .timer-container { font-size:32px; font-weight:bold; color:#880e4f; position: relative; z-index: 12; }
+
+        .right-panel { width:58%; display:flex; justify-content:center; align-items:center; }
+
+        .tree-container {
+            position: relative;
+            width: 680px;
+            height: 780px;
+            cursor: pointer;
+        }
+
+        .trunk {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 240px;
+            background: linear-gradient(to top, #004d40, #00695c, #00897b);
+            border-radius: 50px 50px 0 0;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+        }
+
+        #foliage-container {
+            position: absolute;
+            bottom: 160px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 680px;
+            height: 620px;
+            pointer-events: none;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 22px;
+            opacity: 0;
+            animation: bloom 1.8s ease-out forwards;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            transform: scaleY(-1);
+        }
+
+        @keyframes bloom {
+            0%   { opacity:0; transform:scale(0) rotate(-360deg) scaleY(-1); }
+            70%  { opacity:1; transform:scale(1.25) scaleY(-1); }
+            100% { opacity:1; transform:scale(1) scaleY(-1); }
+        }
+
+        .falling-heart {
+            position: fixed;
+            font-size: 30px;
+            pointer-events: none;
+            z-index: 12;
+            transform: scaleY(-1);
+            animation: fallHeart 7s linear forwards;
+        }
+
+        @keyframes fallHeart {
+            0%   { transform: translateY(0) rotate(0deg) scaleY(-1); opacity: 0.95; }
+            100% { 
+                transform: translateY(90vh) 
+                           translateX(calc((var(--drift, 0) - 0.5) * 800px)) 
+                           rotate(1080deg) scaleY(-1); 
+                opacity: 0; 
+            }
+        }
+
+        /* Destellos al click */
+        .sparkle {
+            position: fixed;
+            width: 12px; height: 12px;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 20;
+            animation: sparkleAnim 0.8s ease-out forwards;
+            box-shadow: 0 0 12px #fff, 0 0 20px #ff69b4;
+        }
+        @keyframes sparkleAnim {
+            0%   { transform: scale(0) rotate(0deg); opacity:1; }
+            100% { transform: scale(2.5) rotate(360deg); opacity:0; }
+        }
+
+        #magic-box {
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%; max-width: 520px;
+            background: rgba(255,245,247,0.96);
+            backdrop-filter: blur(10px);
+            border: 3px solid #ff80ab;
+            border-radius: 24px;
+            padding: 35px;
+            box-shadow: 0 20px 50px rgba(233,30,99,0.35);
+            z-index: 30;
+            display: none;
+            text-align: center;
+            font-size: 24px;
+        }
+
+        #magic-input {
+            width: 100%; padding: 16px; margin: 20px 0;
+            font-size: 22px; border: 2px solid #f48fb1; border-radius: 12px;
+            text-align: center; font-family: Georgia, serif;
+        }
+
+        #magic-result { margin-top:25px; font-size:0; opacity:0; transition:all 1.2s ease; }
+        #magic-result img {
+            max-width:100%; border-radius:16px;
+            border:8px solid #fff; box-shadow:0 10px 30px rgba(0,0,0,0.25);
+        }
+
+        @keyframes fadeIn { to { opacity:1; } }
+        @keyframes slideIn { to { opacity:1; transform:translateX(0); } }
+    </style>
+</head>
+<body>
+
+    <!-- Audio con tu canción love.mp3 (debe estar en la misma carpeta que este HTML) -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="love.mp3" type="audio/mpeg">
+        Tu navegador no soporta el elemento de audio.
+    </audio>
+
+    <div class="container">
+        <div class="left-panel">
+            <div class="title">Para el amor de mi vida 🌷</div>
+            <div id="poem"></div>
+            <div class="timer-container">
+                <div>Nuestro amor lleva...</div>
+                <div id="timer"></div>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <div class="tree-container" id="tree">
+                <div class="trunk"></div>
+                <div id="foliage-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="magic-box">
+        <h2>¿Qué sientes hoy? 💕</h2>
+        <input type="text" id="magic-input" placeholder="Escribe aquí..." autocomplete="off">
+        <div id="magic-result"></div>
+    </div>
+
+    <script>
+        const poemLines = [
+            "Si pudiera elegir un lugar",
+            "seguro, sería a tu lado.",
+            "",
+            "Cuanto más tiempo estoy",
+            "contigo más te amo.",
+            "",
+            "Eres mi refugio, mi hogar,",
+            "mi todo... ❤️"
+        ];
+
+        const colors = ['#ff1744','#ff4081','#ff80ab','#ffc1e3','#f48fb1','#e91e63','#c2185b','#ad1457'];
+
+        const startDate = new Date('2025-08-12T00:00:00');
+        let lineIndex = 0;
+        let initialPhase = true;
+
+        function updateTimer() {
+            const diff = Date.now() - startDate;
+            const d = Math.floor(diff / 86400000);
+            const h = Math.floor((diff % 86400000) / 3600000);
+            const m = Math.floor((diff % 3600000) / 60000);
+            const s = Math.floor((diff % 60000) / 1000);
+            document.getElementById('timer').textContent = `${d} días ${h} h ${m} min ${s} seg`;
+        }
+        setInterval(updateTimer, 1000);
+        updateTimer();
+
+        function addPoemLine() {
+            if (lineIndex >= poemLines.length) {
+                initialPhase = false;
+                return;
+            }
+            const poem = document.getElementById('poem');
+            const div = document.createElement('div');
+            div.className = 'poem-line';
+            div.style.animationDelay = `${lineIndex * 1.4}s`;
+            div.textContent = poemLines[lineIndex] || '';
+            poem.appendChild(div);
+            lineIndex++;
+        }
+
+        function createHeart() {
+            const container = document.getElementById('foliage-container');
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.textContent = '❤️';
+            heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+
+            const t = Math.random() * Math.PI * 2;
+            const scale = 18 + Math.random() * 8;
+            const x = scale * (16 * Math.pow(Math.sin(t), 3));
+            const y = scale * (13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
+
+            const centerX = 325;
+            const centerY = 320;
+
+            heart.style.left = `${centerX + x + (Math.random() - 0.5) * 35}px`;
+            heart.style.bottom = `${centerY - y + (Math.random() - 0.5) * 35}px`;
+
+            container.appendChild(heart);
+
+            if (Math.random() < (initialPhase ? 0.38 : 0.22)) {
+                setTimeout(() => {
+                    const r = heart.getBoundingClientRect();
+                    const fall = document.createElement('div');
+                    fall.className = 'falling-heart';
+                    fall.textContent = '❤️';
+                    fall.style.color = heart.style.color;
+
+                    const drift = initialPhase ? Math.random() * 0.4 : Math.random();
+                    fall.style.setProperty('--drift', drift);
+
+                    fall.style.left = (r.left + r.width/2 - 15) + 'px';
+                    fall.style.top  = (r.top + r.height/2 - 15) + 'px';
+
+                    document.body.appendChild(fall);
+                    setTimeout(() => fall.remove(), 8000);
+
+                    if (Math.random() < (initialPhase ? 0.55 : 0.3)) {
+                        addPoemLine();
+                    }
+                }, 400 + Math.random() * 1800);
+            }
+
+            if (container.children.length > 800) {
+                container.removeChild(container.children[0]);
+            }
+        }
+
+        setTimeout(() => {
+            let i = 0;
+            const fill = setInterval(() => {
+                createHeart();
+                i++;
+                if (i > 650) clearInterval(fill);
+            }, 12);
+
+            setInterval(createHeart, 140);
+        }, 800);
+
+        document.addEventListener('click', e => {
+            for (let i = 0; i < 6; i++) {
+                setTimeout(() => {
+                    const s = document.createElement('div');
+                    s.className = 'sparkle';
+                    s.style.left = (e.clientX + (Math.random()-0.5)*60) + 'px';
+                    s.style.top  = (e.clientY + (Math.random()-0.5)*60) + 'px';
+                    document.body.appendChild(s);
+                    setTimeout(() => s.remove(), 900);
+                }, i * 80);
+            }
+        });
+
+        document.getElementById('tree').addEventListener('click', () => {
+            const box = document.getElementById('magic-box');
+            box.style.display = 'block';
+            document.getElementById('magic-input').focus();
+        });
+
+        document.getElementById('magic-input').addEventListener('input', e => {
+            const val = e.target.value.trim();
+            const result = document.getElementById('magic-result');
+
+            if (val === "Amor" || val === "amor") {
+                result.innerHTML = `
+                    <img src="love.jpeg" alt="Amor eterno">
+                    <p style="margin-top:20px; font-size:28px; color:#c2185b;">
+                        Te amo con todo mi corazón ♡
+                    </p>
+                `;
+                result.style.fontSize = '28px';
+                result.style.opacity = '1';
+                e.target.disabled = true;
+                setTimeout(() => {
+                    document.getElementById('magic-box').style.display = 'none';
+                    e.target.value = '';
+                    e.target.disabled = false;
+                    result.innerHTML = '';
+                    result.style.opacity = '0';
+                }, 8000);
+            }
+        });
+
+        // Música: reproducir al primer clic (requerido por navegadores)
+        const music = document.getElementById('bgMusic');
+        music.volume = 0.25; // volumen suave
+
+        // Reproducir en el primer clic (cualquier parte de la página)
+        document.addEventListener('click', function startMusic() {
+            music.play().catch(err => console.log("Autoplay bloqueado:", err));
+            // Eliminar el listener después del primer clic exitoso
+            document.removeEventListener('click', startMusic);
+        }, { once: true });
+
+        // Registro del Service Worker (solo si el navegador lo soporta)
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then((reg) => {
+        console.log('Service Worker registrado correctamente', reg);
+      })
+      .catch((err) => {
+        console.error('Error al registrar Service Worker:', err);
+      });
+  });
+}
+    </script>
+</body>
+</html>
